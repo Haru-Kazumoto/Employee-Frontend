@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import Alert from "@mui/material/Alert";
-import { Snackbar } from "@mui/material";
+import { AlertColor, Snackbar } from "@mui/material";
 import "./style.css";
 import {SignIn} from "../service/SignIn.tsx";
 
 const Login = () => {
   const [loginDetail, setLoginDetail] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
-  const[alert, setAlert] = useState<{open : boolean,content : string}>({
+  const[alert, setAlert] = useState<{open : boolean,content : string,type:AlertColor|undefined}>({
     open : false,
-    content : "" 
+    content : "",
+    type:undefined
   });
-
-  // const[notify, setNotify] = useState<{type: string}>({
-  //   type:""
-  // });
 
   const handleChange=(event: any, field: any) =>{
     let actualValue = event.target.value
@@ -33,28 +30,30 @@ const Login = () => {
     event.preventDefault();
     console.log(loginDetail);
 
-    if(loginDetail.username.trim() ==='' || loginDetail.password.trim() ===''){
+    if(loginDetail.email.trim() ==='' || loginDetail.password.trim() ===''){
       setAlert({
         open : true,
-        content : "Field Cannot be empty !"
+        content : "Field Cannot be empty !",
+        type:"error"
       })
     }
 
     //Submit data
-    SignIn(loginDetail).then((jwtTokenData) => {
+    SignIn(loginDetail).then((data) => {
       console.log("User login : ");
-      console.log(jwtTokenData);
+      console.log(data);
+      setAlert({
+        open: true,
+        content: "Login success!",
+        type: "success"
+      })
     }).catch(err => { 
       console.log(err);
-      if(err === 400 || err === 404){
+      if(err.response.status === 400){
         setAlert({
           open: true,
-          content: "There is something trouble with server..."
-        })
-      } else {
-        setAlert({
-          open: true,
-          content: "Credential is wrong!"
+          content: "Bad Credentials",
+          type: "error"
         })
       }
     })
@@ -63,7 +62,8 @@ const Login = () => {
 const onHandleClose = () => {
   setAlert({
     open : false,
-    content : alert.content
+    content : alert.content,
+    type: undefined
   })
 }
 
@@ -75,7 +75,7 @@ const onHandleClose = () => {
         horizontal : "center"
       }
     }>
-      <Alert severity="error">{alert.content}</Alert>
+      <Alert severity={alert.type}>{alert.content}</Alert>
     </Snackbar> 
     <div className="container">
       
@@ -96,8 +96,8 @@ const onHandleClose = () => {
               <input 
               type="text" 
               id="email" 
-              value={loginDetail.username} 
-              onChange={(e) => handleChange(e, 'username')}/>
+              value={loginDetail.email} 
+              onChange={(e) => handleChange(e, 'email')}/>
             </div>
 
             {/* Password input box */}
