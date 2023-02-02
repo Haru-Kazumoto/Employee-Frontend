@@ -1,7 +1,7 @@
 import * as AiIcons from 'react-icons/ai';
 import * as RxIcons from 'react-icons/rx';
 import * as HiIcons from 'react-icons/hi';
-
+import * as BiIcons from 'react-icons/bi';
 export const SidebarData = [
     {
         title: 'Dashboard',
@@ -25,6 +25,12 @@ export const SidebarData = [
         title: 'About',
         path: '/about',
         icon: <AiIcons.AiOutlineInfoCircle />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Logout',
+        path: '/logout',
+        icon: <BiIcons.BiLogOut />,
         cName: 'nav-text'
     }
 ]

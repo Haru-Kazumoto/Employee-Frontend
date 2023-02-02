@@ -47,6 +47,7 @@ const Login = () => {
         content: "Login success!",
         type: "success"
       })
+      
     }).catch(err => { 
       console.log(err);
       if(err.response.status === 400){
@@ -70,11 +71,7 @@ const onHandleClose = () => {
   return (
     <>
     <Snackbar open={alert.open} autoHideDuration={2000} onClose={onHandleClose} anchorOrigin={
-      {
-        vertical : "top",
-        horizontal : "center"
-      }
-    }>
+      {vertical : "top",horizontal : "center"}}>
       <Alert severity={alert.type}>{alert.content}</Alert>
     </Snackbar> 
     <div className="container">
@@ -120,11 +117,12 @@ const onHandleClose = () => {
               </div>
             </div>
             <button type="submit">Sign In</button>
+            <a href="/register" className="redirect">Don't have account? Sign up now!</a>
           </div>
         </form>
       </div>
       <div className="login-right">
-        <img src="/image.png" alt="" />
+        <img src="/person-managing-it-settings.png" alt="" />
       </div>
     </div>
     </>
